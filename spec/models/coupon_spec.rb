@@ -23,9 +23,12 @@ RSpec.describe Coupon, type: :model do
     end
   end
 
-  context 'when due_date is in the future' do
-    let(:due_date) { Date.tomorrow }
+  let(:due_date) { Date.tomorrow } # Data válida para o teste
 
+  subject { described_class.new(code: 'COUPON123', status: :active, discount_value: 10, due_date: due_date) }
+  # Garantir acima que todas as validações de presença e numéricas sejam atendidas.
+
+  context 'when due_date is in the future' do
     it 'is valid' do
       expect(subject).to be_valid
       expect(subject.errors[:due_date]).to be_empty
