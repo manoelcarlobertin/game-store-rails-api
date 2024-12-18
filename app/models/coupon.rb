@@ -5,5 +5,5 @@ class Coupon < ApplicationRecord
   validates :due_date, presence: true
   validates :due_date, presence: true, future_date: true # custom validator note.
 
-  # enum status: { active: 1,  inactive: 2 } # 1 error occurred outside of examples ao desmarcar
+  enum :status, { active: 1,  inactive: 2 }
 end
