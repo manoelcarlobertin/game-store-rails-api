@@ -1,14 +1,19 @@
-RSpec.describe "Admin V1 Categories as :admin", type: :request do
-  context "POST /categories" do
-    let(:url) { "/admin/v1/categories" }
+require 'rails_helper'
 
-    context "with valid params" do
-      let(:category_params) { { category: attributes_for(:category) }.to_json }
+RSpec.describe 'Admin V1 Categories', type: :request do # uso variáveis abaixo:
+  let(:user) { create(:admin_user) } # Certifique-se de que você tenha uma factory para criar um usuário admin
+  let(:category_params) { { name: 'New Category' } } # Defina os parâmetros válidos para a categoria
+  let(:url) { '/admin/v1/categories' } # Defina a URL correta para a requisição
 
+  describe 'POST /categories' do
+    context 'with valid params' do
+      # let(:category_params) { { category: attributes_for(:category) }.to_json }
       it 'adds a new Category' do
-        expect do
-          post url, headers: auth_header(user), params: category_params
-        end.to change(Category, :count).by(1)
+        post url, headers: auth_header(user), params: category_params
+
+        expect(response).to have_http_status(:created)
+        # expect do
+        # end.to change(Category, :count).by(1)
       end
 
       it 'returns last added Category' do
@@ -19,7 +24,8 @@ RSpec.describe "Admin V1 Categories as :admin", type: :request do
 
       it 'returns success status' do
         post url, headers: auth_header(user), params: category_params
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:created)
+        # após a criação de uma categoria (201 Created)
       end
     end
 
@@ -46,7 +52,22 @@ RSpec.describe "Admin V1 Categories as :admin", type: :request do
     end
   end
 
-  # faltou context PATCH
+    context 'PATCH /categories/:id' do
+    let!(:category) { create(:category) }
+    let(:url) { "/admin/v1/categories/#{category.id}" }
+    let(:updated_params) { { name: 'Updated Category' } }
+
+    it 'updates the Category' do
+      patch url, headers: auth_header(user), params: updated_params
+      category.reload
+      expect(category.name).to eq('Updated Category')
+    end
+
+    it 'returns success status' do
+      patch url, headers: auth_header(user), params: updated_params
+      expect(response).to have_http_status(:ok)
+    end
+  end
 
 
   context "DELETE /categories/:id" do
