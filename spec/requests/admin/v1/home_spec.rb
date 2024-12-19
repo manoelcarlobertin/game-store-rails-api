@@ -1,7 +1,7 @@
 require "rails_helper"
 # teste para a rota da home
 describe "Home", type: :request do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, profile: :admin) }
 
   before do
       get '/admin/v1/home', headers: auth_header(user)
