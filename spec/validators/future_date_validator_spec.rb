@@ -12,6 +12,8 @@ end
 RSpec.describe FutureDateValidator do
   subject { Validatable.new }
 
+  let(:current_date) { Date.today }
+
   context "when date is before current date" do
     before { subject.date = 1.day.ago }
 
@@ -21,7 +23,7 @@ RSpec.describe FutureDateValidator do
 
     it "adds an error on model (se o model possui o campo *date* nos erros)" do
       subject.valid?
-      expect(subject.errors.keys).to include(:date) # aqui error
+      expect(subject.errors.messages.keys).to include(:date)
     end
   end
 
@@ -34,7 +36,7 @@ RSpec.describe FutureDateValidator do
 
     it "adds an error on model (o model precisa ter o campo *date* nos erros)" do
       subject.valid?
-      expect(subject.errors.keys).to include(:date) # aqui error
+      expect(subject.errors.messages.keys).to include(:date)
     end
   end
 
