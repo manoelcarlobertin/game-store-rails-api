@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Admin V1 Categories', type: :request do # uso variáveis abaixo:
-  let(:user) { create(:admin_user) } # Certifique-se de que você tenha uma factory para criar um usuário admin
+  let(:user) { create(:user, profile: :admin) } # Certifique-se de que você tenha uma factory para criar um usuário admin
   let(:category_params) { { name: 'New Category' } } # Defina os parâmetros válidos para a categoria
   let(:url) { '/admin/v1/categories' } # Defina a URL correta para a requisição
 
