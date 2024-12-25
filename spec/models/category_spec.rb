@@ -14,6 +14,7 @@ RSpec.describe Category, type: :model do
   # incluí aqui shared example no model Category
   # aqui chama o concern e passa como parâmetro nome da factory
   it_behaves_like "name searchable concern", :category
+  it_behaves_like "paginatable concern", :category
 end
 # quando Category por remova, todos registros ProductCategory associados a ela também serão.
 # Também estamos add uma associação has_many direto com Product através da associação com ProductCategory
