@@ -19,6 +19,11 @@ class User < ApplicationRecord
   # has_many :product_categories
   # has_many :orders
   # has_many :order_items
+
+  def generate_jwt
+    payload = { user_id: self.id }
+    JWT.encode(payload, Rails.application.credentials.secret_key_base)
+  end
 end
 # Validação da presença da senha.
 # Criação de um método authenticate para verificar se a senha fornecida está correta.

@@ -10,6 +10,10 @@ RSpec.describe Category, type: :model do
 
   it { is_expected.to have_many(:product_categories).dependent(:destroy) }
   it { is_expected.to have_many(:products).through(:product_categories) }
+
+  # incluí aqui shared example no model Category
+  # aqui chama o concern e passa como parâmetro nome da factory
+  it_behaves_like "name searchable concern", :category
 end
-# quando **Category** por remova, todos os registros **ProductCategory** associados a ela também serão.
-# Também estamos add uma associação *has_many* direto com **Product** através da associação com **ProductCategory**
+# quando Category por remova, todos registros ProductCategory associados a ela também serão.
+# Também estamos add uma associação has_many direto com Product através da associação com ProductCategory

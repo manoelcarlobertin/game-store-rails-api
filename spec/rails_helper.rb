@@ -14,7 +14,9 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 RSpec.configure do |config|
+  config.include RequestAPI, type: :request
   config.include FactoryBot::Syntax::Methods
+
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]
