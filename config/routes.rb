@@ -10,19 +10,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
     namespace :v1 do
-      resources :categories, only: [ :index, :show, :create, :update, :destroy ]
-    end
-  end
-
-  # namespace :admin do
-  #   namespace :v1 do
-  #     resources :categories, only: [ :create ]
-  #   end
-  # end
-
-  namespace :admin do
-    namespace :v1 do
-        get "home", to: "home#index"
+      get "home", to: "home#index"
+      resources :categories
     end
   end
 

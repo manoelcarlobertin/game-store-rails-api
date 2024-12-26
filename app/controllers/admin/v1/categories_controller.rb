@@ -3,7 +3,7 @@ module Admin::V1
     before_action :load_category, only: %i[show edit update destroy]
 
     def index
-      @categories = Category.all
+      categories = Category.all
       render json: { categories: categories.as_json(only: [:id, :name]) }
     end
 
@@ -13,13 +13,12 @@ module Admin::V1
     end
 
     def create
-      @category = Category.new(category_params)
-      if @category.save
-        render :show, status: :created
-        # render json: category, status: :created
+      category = Category.new(category_params) # Inicializa a nova categoria com os parâmetros
+
+      if category.save
+        render json: { category: category.slice(:id, :name) }, status: :created
       else
-        render_error(fields: @category.errors.messages)
-        # render json: { errors: category.errors }, status: :unprocessable_entity
+        render json: { errors: { fields: category.errors } }, status: :unprocessable_entity
       end
     end
 
@@ -56,7 +55,7 @@ module Admin::V1
     end
 
     def category_params
-      params.require(:category).permit(:name)
+      params.require(:category).permit(:name) # Ajuste os atributos conforme necessário
     end
 
     def render_error(fields:)

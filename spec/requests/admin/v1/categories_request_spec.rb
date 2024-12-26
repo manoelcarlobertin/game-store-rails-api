@@ -25,11 +25,12 @@ RSpec.describe "Admin::V1::Categories", type: :request do
       it 'adds a new Category' do
         expect do
           post url, headers: auth_header(user), params: category_params
-        end.to change(Category, :count).by(1)
+        end.to change(Category, :count).by(1) # persistida no banco.
       end
 
       it 'returns last added Category' do
         post url, headers: auth_header(user), params: category_params
+        expect(response.status).to eq(201) # Verifique o status
         expected_category = Category.last.as_json(only: %i[id name])
         expect(body_json['category']).to eq expected_category
       end
@@ -46,20 +47,21 @@ RSpec.describe "Admin::V1::Categories", type: :request do
       end
 
       it 'does not add a new Category' do
-        expect do
+        expect do # passo parâmetros inválidos e
           post url, headers: auth_header(user), params: category_invalid_params
         end.to_not change(Category, :count)
-      end
+      end # nenhuma alteração na contagem acima.
 
-      it 'returns error message' do
-        post url, headers: auth_header(user), params: category_invalid_params
-        expect(body_json['errors']['fields']).to have_key('name')
-      end
+     it 'returns error message' do
+      post url, headers: auth_header(user), params: category_invalid_params
+      expect(response.status).to eq(422) # Verifique o status
+      expect(body_json['errors']['fields']).to have_key('name')
+    end
 
-      it 'returns unprocessable_entity status' do
+      it 'returns unprocessable_entity status 422' do
         post url, headers: auth_header(user), params: category_invalid_params
         expect(response).to have_http_status(:unprocessable_entity)
-      end
+      end # o matcher have_http_status p/ validar o status 422.
     end
 
     # it_behaves_like 'unauthenticated access'
@@ -126,17 +128,33 @@ RSpec.describe "Admin::V1::Categories", type: :request do
       expect do
         delete url, headers: auth_header(user)
       end.to change(Category, :count).by(-1)
-    end
+    end # se houve redução qtd categoria.
 
     it 'returns success status' do
       delete url, headers: auth_header(user)
       expect(response).to have_http_status(:no_content)
-    end
+    end # status que foi retornado.204
 
     it 'does not return any body content' do
       delete url, headers: auth_header(user)
       expect(body_json).to_not be_present
+    end # a resposta realmente está sem conteúdo no body?
+
+    it 'removes all associated product categories' do
+      product_categories = create_list(:product_category, 3, category: category)
+      delete url, headers: auth_header(user)
+      expected_product_categories = ProductCategory.where(id: product_categories.map(&:id))
+      expect(expected_product_categories.count).to eq 0
     end
+    # se todas associações ProductCategories associadas a ela foram removidas acima.
+
+    it 'does not remove unassociated product categories' do
+      product_categories = create_list(:product_category, 3)
+      delete url, headers: auth_header(user)
+      present_product_categories_ids = product_categories.map(&:id)
+      expected_product_categories = ProductCategory.where(id: present_product_categories_ids)
+      expect(expected_product_categories.ids).to contain_exactly(*present_product_categories_ids)
+    end  # e verificar se todas não associadas à category*permanecem intactas acima.
 
     # it_behaves_like 'unauthenticated access'
   end
