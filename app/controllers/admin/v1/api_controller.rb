@@ -1,23 +1,25 @@
 module Admin::V1
   class ApiController < ApplicationController
-    class ForbiddenAccess < StandardError; end
+    SECRET_KEY = Rails.application.credentials.secret_key_base.to_s
 
-      include Authenticatable
+    before_action :authenticate_request
 
-      # Aqui estamos importando o concern que rendereza os erros
-      include SimpleErrorRenderable
-      self.simple_error_partial = "shared/simple_error"
+    private
 
-      rescue_from ForbiddenAccess do
-        render_error(message: "Forbidden access", status: :forbidden)
-      end # verifique se usuário tem esse perfil e caso não, lance a exceção **ForbidenAccess**
+    def authenticate_request
+      header = request.headers["Authorization"]
+      token = header.split(" ").last if header
+      decoded = jwt_decode(token)
+      @current_user = User.find(decoded[:user_id])
+    rescue ActiveRecord::RecordNotFound, JWT::DecodeError
+      render json: { errors: [ "Não autorizado" ] }, status: :unauthorized
+    end
 
-      before_action :restrict_access_for_admin! # callback verificador se perfil admin
+    def jwt_decode(token)
+      decoded = JWT.decode(token, SECRET_KEY)[0]
+      HashWithIndifferentAccess.new(decoded)
+    end
 
-      private
-      # agora temos o acesso restrito apenas ao usuário **:admin**.
-      def restrict_access_for_admin!
-        raise ForbiddenAccess unless current_user.admin?
-      end
+    attr_reader :current_user
   end
 end

@@ -1,59 +1,66 @@
 module Admin::V1
-  class CategoriesController < ApiController
-    before_action :load_category, only: [ :update, :destroy ]
+  class CategoriesController < ApplicationController
+    before_action :load_category, only: %i[show edit update destroy]
 
     def index
       @categories = Category.all
+      render json: { categories: categories.as_json(only: [:id, :name]) }
     end
 
     def new
       @category = Category.new
+      render json: { category: category.as_json(only: [:id, :name]) }
     end
-
-    def edit; end
-
-    # def search
-    #   @categories = Category.search(params[:query])
-    # end
-
-    # def autocomplete
-    # end
 
     def create
-      @category = Category.new
-      @category.attributes = category_params
-      save_category!
+      @category = Category.new(category_params)
+      if @category.save
+        render :show, status: :created
+        # render json: category, status: :created
+      else
+        render_error(fields: @category.errors.messages)
+        # render json: { errors: category.errors }, status: :unprocessable_entity
+      end
     end
 
-    def show; end
+    def show
+      render json: @category
+    end
+
+    def edit
+      render json: @category
+    end
 
     def update
-      @category.attributes = category_params
-      save_category!
+      if @category.update(category_params)
+        render :show, status: :ok
+      else
+        render_error(fields: @category.errors.messages)
+      end
     end
 
-   def destroy
-      @category.destroy!
-    rescue
-      render_error(fields: @category.errors.messages)
+    def destroy
+      if @category.destroy
+        head :no_content
+      else
+        render_error(fields: @category.errors.messages)
+      end
     end
 
     private
 
     def load_category
-      @category = Category.find(params[:id])
+      @category = Category.find_by(id: params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render_error(message: "Categoria não encontrada", status: :not_found) unless @category
     end
 
     def category_params
-      return {} unless params.has_key?(:category)
-      params.require(:category).permit(:id, :name)
+      params.require(:category).permit(:name)
     end
 
-    def save_category!
-      @category.save!
-      render :show
-    rescue
-      render_error(fields: @category.errors.messages)
+    def render_error(fields:)
+      render json: { errors: fields }, status: :unprocessable_entity
     end
   end
 end

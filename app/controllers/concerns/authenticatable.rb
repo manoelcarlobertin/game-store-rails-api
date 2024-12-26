@@ -1,5 +1,6 @@
 module Authenticatable
-  extend ActiveSupport::Concern
+  # criar módulos que podem ser incluídos em classes. Isso facilita a inclusão de callbacks
+  extend ActiveSupport::Concern #  e métodos de instância. (ActiveSupport::Concern)
 
   included do
     before_action :authenticate_user!
