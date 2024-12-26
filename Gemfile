@@ -5,7 +5,7 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 
 # Authentication
-gem "jwt", "~> 2.9"
+gem "jwt", "~> 2.10"
 gem "bcrypt", "~> 3.1.7"
 
 # Build JSON APIs
