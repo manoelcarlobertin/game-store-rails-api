@@ -59,7 +59,7 @@ module Admin::V1
     end
 
     def render_error(fields:)
-      render json: { errors: fields }, status: :unprocessable_entity
+      render json: { errors: { fields: fields } }, status: :unprocessable_entity
     end
   end
 end

@@ -108,6 +108,7 @@ RSpec.describe "Admin::V1::Categories", type: :request do
 
       it 'returns error message' do
         patch url, headers: auth_header(user), params: category_invalid_params
+        expect(body_json['errors']).not_to be_nil
         expect(body_json['errors']['fields']).to have_key('name')
       end
 
