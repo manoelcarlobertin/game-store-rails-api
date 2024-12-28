@@ -9,6 +9,9 @@ RSpec.describe Coupon, type: :model do
   it { is_expected.to validate_numericality_of(:discount_value).is_greater_than(0) }
   it { is_expected.to validate_presence_of :due_date }
 
+  it_behaves_like "name searchable concern", :coupon
+  it_behaves_like "paginatable concern", :coupon
+
   # a variável due_date precisa ser definida antes de ser usada.
   let(:due_date) { Date.today } # Defina um valor padrão para due_date
 

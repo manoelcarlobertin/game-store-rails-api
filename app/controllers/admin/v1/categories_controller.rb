@@ -1,10 +1,10 @@
 module Admin::V1
   class CategoriesController < ApplicationController
-    before_action :load_category, only: %i[show edit update destroy]
+    before_action :load_category, only: [:show, :update, :destroy]
 
     def index
-      categories = Category.all
-      render json: { categories: categories.as_json(only: [:id, :name]) }
+      @loading_service = Admin::ModelLoadingService.new(Category.all, searchable_params)
+      @loading_service.call
     end
 
     def new
@@ -22,9 +22,7 @@ module Admin::V1
       end
     end
 
-    def show
-      render json: @category
-    end
+    def show; end
 
     def edit
       render json: @category
@@ -52,6 +50,10 @@ module Admin::V1
       @category = Category.find_by(id: params[:id])
     rescue ActiveRecord::RecordNotFound
       render_error(message: "Categoria não encontrada", status: :not_found) unless @category
+    end
+
+    def searchable_params
+      params.permit({ search: :name }, { order: {} }, :page, :length)
     end
 
     def category_params

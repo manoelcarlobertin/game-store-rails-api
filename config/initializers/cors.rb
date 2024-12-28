@@ -1,9 +1,11 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins "*"
-    resource "*", headers: :any, methods: [ :get, :post, :put, :patch, :delete ]
+    resource "*", headers: :any, methods: [ :get, :post, :put, :patch, :delete ],
+                  expose: ['access-token', 'client', 'expiry', 'token-type', 'uid']
   end
 end
+# O **RackCORS** é um middleware que permite que o Rails seja consumido
 
 # Nós configuramos o **RackCORS** como um middleware do Rails.
 # Este *insert_before 0* está informando que estamos adicionando

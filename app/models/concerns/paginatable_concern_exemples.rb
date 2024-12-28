@@ -1,4 +1,3 @@
-
 RSpec.shared_examples 'paginatable concern' do
   let(:records_per_page) { 2 }
   let(:page) { 1 }

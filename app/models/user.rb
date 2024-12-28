@@ -1,4 +1,7 @@
-class User < ApplicationRecord
+# class User < ApplicationRecord
+class User < ActiveRecord::Base
+  include NameSearchable
+  include Paginatable
   enum :profile, { admin: 0, client: 1 }
   has_secure_password # permite que você use o método authenticate para verificar a senha.
 
