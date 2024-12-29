@@ -10,6 +10,8 @@ RSpec.describe Game, type: :model do
   it { is_expected.to belong_to :system_requirement }
   it { is_expected.to have_one :product }
 
+  # it_has_behavior_of "like searchable concern", :game, :developer
+
   # Testando a enumeração
   describe 'enums' do
     it 'define os modos corretamente' do
