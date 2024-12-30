@@ -21,7 +21,7 @@ Bundler.require(*Rails.groups)
 module ManoEcommerceApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 8.0
+    config.load_defaults '7.2'
 
     # Listar todos os arquivos, incluíndo subdiretórios, que estão dentro de *config/locales*
     # e adicionar o *path* do i18n. Abaixo:
