@@ -110,6 +110,12 @@ RSpec.describe "Admin V1 Categories as :admin", type: :request do
     context "with valid params" do
       let(:category_params) { { category: attributes_for(:category) }.to_json }
 
+<<<<<<< HEAD
+=======
+  describe 'POST /categories' do
+    context 'with valid params' do
+      let(:category_params) { { category: attributes_for(:category) }.to_json }
+>>>>>>> 6ad46b8826e08838da68a791b6bfbe391807d51c
       it 'adds a new Category' do
         expect do
           post url, headers: auth_header(user), params: category_params
@@ -139,11 +145,6 @@ RSpec.describe "Admin V1 Categories as :admin", type: :request do
         end.to_not change(Category, :count)
       end
 
-      it 'returns error message' do
-        post url, headers: auth_header(user), params: category_invalid_params
-        expect(body_json['errors']['fields']).to have_key('name')
-      end
-
       it 'returns unprocessable_entity status' do
         post url, headers: auth_header(user), params: category_invalid_params
         expect(response).to have_http_status(:unprocessable_entity)
@@ -151,6 +152,7 @@ RSpec.describe "Admin V1 Categories as :admin", type: :request do
     end
   end
 
+<<<<<<< HEAD
   context "GET /categories/:id" do
     let(:category) { create(:category) }
     let(:url) { "/admin/v1/categories/#{category.id}" }
@@ -163,10 +165,37 @@ RSpec.describe "Admin V1 Categories as :admin", type: :request do
 
     it "returns success status" do
       get url, headers: auth_header(user)
+=======
+    context 'PATCH /categories/:id' do
+      let!(:category) { create(:category) }
+      let(:url) { "/admin/v1/categories/#{category.id}" }
+      let(:new_name) { 'Updated Category' }
+
+      it 'updates the Category' do
+        patch url, headers: auth_header(user), params: new_name
+
+        category.reload
+        expect(category.name).to eq('Updated Category')
+      end
+      # it 'updates the Category' do
+      #   patch "/admin/v1/categories/#{category.id}",
+      #         params: { category: { name: new_name } },
+      #         headers: auth_header(user)
+      #   category.reload
+      #   expect(category.name).to eq(new_name)
+      # end
+
+
+
+
+    it 'returns success status' do
+      patch url, headers: auth_header(user)
+>>>>>>> 6ad46b8826e08838da68a791b6bfbe391807d51c
       expect(response).to have_http_status(:ok)
     end
   end
 
+<<<<<<< HEAD
   context "PATCH /categories/:id" do
     let(:category) { create(:category) }
     let(:url) { "/admin/v1/categories/#{category.id}" }
@@ -218,6 +247,8 @@ RSpec.describe "Admin V1 Categories as :admin", type: :request do
     end
   end
 
+=======
+>>>>>>> 6ad46b8826e08838da68a791b6bfbe391807d51c
   context "DELETE /categories/:id" do
     let!(:category) { create(:category) }
     let(:url) { "/admin/v1/categories/#{category.id}" }

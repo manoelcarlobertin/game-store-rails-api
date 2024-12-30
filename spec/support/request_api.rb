@@ -12,12 +12,22 @@ module RequestAPI
     token = user.generate_jwt # método correto p gerar o token
     header = { 'Authorization' => "Bearer #{token}" }
     header.merge({ 'Content-Type' => 'application/json', 'Accept' => 'application/json' }).merge(merge_with)
+<<<<<<< HEAD
   end
 
   def unauthenticated_header(merge_with: {})
     default_header = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
     default_header.merge merge_with
+=======
+>>>>>>> 6ad46b8826e08838da68a791b6bfbe391807d51c
   end
+
+  # def auth_header(user = nil, merge_with: {})
+  #   user ||= create(:user)
+  #   auth = user.create_new_auth_token
+  #   header = auth.merge({ 'Content-Type' => 'application/json', 'Accept' => 'application/json' })
+  #   header.merge merge_with
+  # end
 end
 # incluir este módulo dentro do **RSpec**.
 RSpec.configure do |config|

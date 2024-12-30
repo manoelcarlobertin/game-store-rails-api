@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6ad46b8826e08838da68a791b6bfbe391807d51c
 RSpec.shared_examples 'paginatable concern' do
   let(:records_per_page) { 2 }
   let(:page) { 1 }
