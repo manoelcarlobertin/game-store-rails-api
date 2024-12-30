@@ -1,18 +1,26 @@
 source "https://rubygems.org"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # ruby 3.3.6 (2024-11-05 revision)
-gem "rails", "~> 8.0.1"
+gem "rails", "~> 7.0"
 gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 
-# Authentication
-gem "jwt", "~> 2.9"
+# Authentication ### aqui me deu problema daí troquei pelo Devise token auth ##
+# gem "jwt", "~> 2.9"
+
+# encriptando o token auth
 gem "bcrypt", "~> 3.1.7"
+
+# gem devise
+# Auth
+gem "devise_token_auth"
 
 # Build JSON APIs
 gem "jbuilder"
 
 # Time zone support
 gem "tzinfo-data", platforms: %i[ windows jruby ]
+# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Cache e Jobs
 gem "solid_cache"
@@ -47,4 +55,10 @@ group :development, :test do
 
   # Estilo de código
   gem "rubocop-rails-omakase", require: false
+end
+
+group :development do
+  gem 'listen', '~> 3.2'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
