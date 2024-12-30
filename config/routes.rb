@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount_devise_token_auth_for 'User', at: 'auth/v1/user'
   # scope :authentication do
   #   post "/login", to: "authentication#login", as: :login
   #   post "/sign_up", to: "authentication#sign_up", as: :sign_up

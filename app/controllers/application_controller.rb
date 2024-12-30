@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+        include DeviseTokenAuth::Concerns::SetUserByToken
   # Adicionar um método de autenticação JWT
   before_action :authenticate_user!
 
@@ -24,6 +25,7 @@ class ApplicationController < ActionController::API
 end
 # Abaixo o método de autenticação é Devise:
 # class ApplicationController < ActionController::API
+        include DeviseTokenAuth::Concerns::SetUserByToken
 #   before_action :configure_permitted_parameters, if: :devise_controller?
 
 #   def not_found

@@ -1,4 +1,4 @@
-class CreateGames < ActiveRecord::Migration[8.0]
+class CreateGames < ActiveRecord::Migration[7.2]
   def change
     create_table :games do |t|
       t.datetime :release_date

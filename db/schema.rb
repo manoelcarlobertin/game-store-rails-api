@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_28_051724) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
+ActiveRecord::Schema[7.2].define(version: 2024_12_30_031354) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -60,16 +57,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_28_051724) do
   create_table "games", force: :cascade do |t|
     t.datetime "release_date"
     t.string "developer"
-    t.bigint "system_requirement_id", null: false
+    t.integer "system_requirement_id", null: false
+    t.string "product_type"
+    t.integer "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "mode"
+    t.index ["product_type", "product_id"], name: "index_games_on_product"
     t.index ["system_requirement_id"], name: "index_games_on_system_requirement_id"
   end
 
   create_table "product_categories", force: :cascade do |t|
-    t.bigint "product_id", null: false
-    t.bigint "category_id", null: false
+    t.integer "product_id", null: false
+    t.integer "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_product_categories_on_category_id"
@@ -81,7 +81,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_28_051724) do
     t.text "description"
     t.decimal "price", precision: 10, scale: 2
     t.string "productable_type", null: false
-    t.bigint "productable_id", null: false
+    t.integer "productable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status"
@@ -106,7 +106,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_28_051724) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "profile"
+    t.string "provider", default: "email", null: false
+    t.string "uid", default: "", null: false
+    t.json "tokens"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

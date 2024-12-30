@@ -172,6 +172,7 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.4)
     msgpack (1.7.5)
+    mutex_m (0.3.0)
     net-imap (0.5.4)
       date
       net-protocol
@@ -209,7 +210,6 @@ GEM
     parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.9)
     psych (5.2.2)
       date
       stringio
@@ -340,6 +340,14 @@ GEM
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
+    sqlite3 (2.5.0-aarch64-linux-gnu)
+    sqlite3 (2.5.0-aarch64-linux-musl)
+    sqlite3 (2.5.0-arm-linux-gnu)
+    sqlite3 (2.5.0-arm-linux-musl)
+    sqlite3 (2.5.0-arm64-darwin)
+    sqlite3 (2.5.0-x86_64-darwin)
+    sqlite3 (2.5.0-x86_64-linux-gnu)
+    sqlite3 (2.5.0-x86_64-linux-musl)
     sshkit (1.23.2)
       base64
       net-scp (>= 1.1.2)
@@ -384,6 +392,7 @@ DEPENDENCIES
   brakeman
   byebug
   debug
+  devise
   devise_token_auth
   factory_bot_rails
   faker
@@ -391,7 +400,7 @@ DEPENDENCIES
   jbuilder
   kamal
   listen (~> 3.2)
-  pg (~> 1.1)
+  mutex_m
   puma (>= 5.0)
   rack-cors
   rails (~> 7.2)
@@ -403,6 +412,7 @@ DEPENDENCIES
   solid_queue
   spring
   spring-watcher-listen (~> 2.0.0)
+  sqlite3
   thruster
   tzinfo-data
 
